@@ -27,7 +27,7 @@ const toolbar = {
 const validateCondition = (...args: unknown[]) => args.every((i) => Boolean(i));
 
 interface NotificationAdd {
-  notificationScenarioId: string;
+  notificationScenario: string;
   smsBody: string;
   emailSubject: string;
   emailBody: string;
@@ -50,7 +50,7 @@ interface NotificationAdd {
 const AddNewNotification = () => {
   const navigate = useNavigate();
 
-  const [staticVaribles, setStaticVaribles] = useState([]);
+  const [staticVaribles, setStaticVaribles] = useState<any>([]);
   const [notificationScenario, setNotificationScenario] = useState([]);
   const [smsCheckbox, setSmsCheckbox] = useState(true);
   const [isActive, setIsActive] = useState(true);
@@ -67,10 +67,54 @@ const AddNewNotification = () => {
   const [errorState, setErrorState] = useState<any>(null);
   const [cur, setCur] = useState<any>("");
   const [fieldType, setFieldType] = useState<any>("");
+  const [emailRecipients, setEmailRecipients] = useState<string[]>([]);
+  const [emailInput, setEmailInput] = useState("");
+
+  useEffect(() => {
+    setStaticVaribles([
+      { name: "##First Name##" },
+      { name: "##Middle Name##" },
+      { name: "##Last Name##" },
+      { name: "##Designation##" },
+      { name: "##Date##" },
+    ]);
+  }, []);
+
+  const validateEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email.trim());
+  };
+
+  const addEmailsFromInput = (input: string) => {
+    const emailsRaw = input.split(/[\s,]+/).filter(Boolean);
+    const validEmails = emailsRaw.filter(validateEmail);
+    setEmailRecipients((prev) => {
+      const combined = [...prev];
+      validEmails.forEach((e) => {
+        if (!combined.includes(e)) combined.push(e);
+      });
+      return combined;
+    });
+  };
+
+  // Handle input keyDown for Enter key
+  const onEmailInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (emailInput.trim() === "") return;
+      addEmailsFromInput(emailInput);
+      setEmailInput("");
+    }
+  };
+
+  // Remove email chip by index
+  const removeEmail = (index: number) => {
+    setEmailRecipients((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const formik = useFormik({
     initialValues: {
-      notificationScenarioId: "",
+      notificationScenario: "",
       smsBody: "",
       emailSubject: "",
       emailBody: "",
@@ -95,6 +139,9 @@ const AddNewNotification = () => {
     },
 
     validationSchema: Yup.object().shape({
+      notificationScenario: Yup.string().required(
+        "Notification Scenario is required"
+      ),
       smsRequired: Yup.boolean(),
       smsBody: Yup.string().max(100, "Max 100 Characters only"),
     }),
@@ -102,9 +149,9 @@ const AddNewNotification = () => {
   const { setFieldValue, values, setFieldTouched, setFieldError } = formik;
 
   const handleSelectChange = (selectedOption: any) => {
-    setFieldValue("notificationScenarioId", selectedOption.value);
+    setFieldValue("notificationScenario", selectedOption.value);
     if (selectedOption.value.length < 1) {
-      setFieldTouched("notificationScenarioId", true);
+      setFieldTouched("notificationScenario", true);
     }
   };
 
@@ -197,9 +244,9 @@ const AddNewNotification = () => {
       }
     }
 
-    if (!values.notificationScenarioId) {
+    if (!values.notificationScenario) {
       setFieldError(
-        "notificationScenarioId",
+        "notificationScenario",
         "Please select a Notification Scenario"
       );
     }
@@ -376,30 +423,56 @@ const AddNewNotification = () => {
           <div className="grid-container-notification">
             <div className="grid-item formDiv form-holder">
               <div className="form-group">
-                <div className="displayError">
-                  {validateCondition(
-                    formik.touched.notificationScenarioId,
-                    formik.errors.notificationScenarioId
-                  ) ? (
-                    <p
-                      className="fieldError active"
-                      style={{ marginTop: "5px" }}
-                    >
-                      {formik.errors.notificationScenarioId}
-                    </p>
-                  ) : (
-                    <p className="fieldError"></p>
-                  )}
+                <label htmlFor="emailRecipients">Email Recipients</label>
+                <div
+                  className="email-recipients-input"
+                  style={{ marginTop: "0.7rem" }}
+                >
+                  {emailRecipients.map((email, idx) => (
+                    <div key={idx} className="email-chip">
+                      {email}
+                      <button
+                        type="button"
+                        className="remove-email"
+                        onClick={() => removeEmail(idx)}
+                        aria-label={`Remove ${email}`}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  <input
+                    id="emailRecipients"
+                    type="text"
+                    placeholder="Type email and press Enter"
+                    value={emailInput}
+                    onChange={(e) => setEmailInput(e.target.value)}
+                    onKeyDown={onEmailInputKeyDown}
+                  />
                 </div>
-                <SelectWrapper
-                  name="notificationScenarioId"
-                  options={notificationScenario}
-                  onChange={handleSelectChange}
-                  placeholder="Notification Scenario"
-                />
               </div>
-
-              <hr className="solid" />
+              <div className="form-group" style={{ marginTop: "2rem" }}>
+                <label htmlFor="notificationScenario">
+                  Notification Scenario
+                </label>
+                <input
+                  id="notificationScenario"
+                  style={{ marginTop: "0.5rem" }}
+                  type="text"
+                  name="notificationScenario"
+                  className="nameInput"
+                  placeholder="Enter notification scenario"
+                  value={formik.values.notificationScenario}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.notificationScenario &&
+                  formik.errors.notificationScenario && (
+                    <div className="fieldError active">
+                      {formik.errors.notificationScenario}
+                    </div>
+                  )}
+              </div>
 
               <div
                 className="form-group form-margin"
@@ -429,6 +502,7 @@ const AddNewNotification = () => {
                   name="smsBody"
                   className="nameInput textarea"
                   placeholder="Message"
+                  style={{ marginTop: "0.7rem" }}
                   value={formik.values.smsBody}
                   onChange={(e) => {
                     setCur(e.target.selectionStart);
@@ -440,7 +514,6 @@ const AddNewNotification = () => {
                   }}
                 />
               </div>
-              <hr className="solid" />
 
               <div className="form-group" style={{ marginTop: "4vh" }}>
                 <Checkbox
@@ -467,6 +540,7 @@ const AddNewNotification = () => {
                   name="emailSubject"
                   className="nameInput"
                   placeholder="Subject"
+                  style={{ marginTop: "0.7rem" }}
                   value={formik.values.emailSubject}
                   onChange={(e) => {
                     setCur(e.target.selectionStart);
@@ -543,8 +617,6 @@ const AddNewNotification = () => {
                 </div>
               </div>
 
-              <hr className="solid" />
-
               <div
                 className="form-group form-margin"
                 style={{ marginTop: "4vh" }}
@@ -578,6 +650,7 @@ const AddNewNotification = () => {
                     setCur(e.target.selectionStart);
                     formik.handleChange(e);
                   }}
+                  style={{ marginTop: "0.7rem" }}
                   onBlur={(e) => {
                     formik.handleBlur(e);
                     setFieldType("inPortalWebSubject");
@@ -646,8 +719,6 @@ const AddNewNotification = () => {
                   />
                 </div>
               </div>
-
-              <hr className="solid" />
 
               {/* sms web app */}
               <div

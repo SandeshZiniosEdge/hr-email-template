@@ -173,7 +173,7 @@ input[type="password"]::-ms-clear {
   color: #ff2626;
 }
 .warning-yellow {
-  color: #f5862d;
+  color: #2d3af5;
 }
 
 .primaryButtonBold {
@@ -269,7 +269,7 @@ input[type="password"]::-ms-clear {
   justify-content: flex-end;
 
   .masked-removed-text {
-    color: #f5862d;
+    color: #2d3af5;
     font-weight: 600;
     font-size: small;
   }
@@ -362,7 +362,7 @@ input[type="password"]::-ms-clear {
 }
 
 .approveBtn {
-  background: #f5862d;
+  background: #2d3af5;
   color: #ffff;
   outline: none;
   border: none;
@@ -464,7 +464,7 @@ button {
   .notificationCount {
     top: -10px;
     right: -10px;
-    background-color: #f5862d;
+    background-color: #2d3af5;
     border-radius: 50%;
     color: #fff;
     position: absolute;
@@ -541,8 +541,8 @@ input[type="search"]::-webkit-search-results-decoration {
       }
     }
     .primeButton {
-      background-color: #f5862d;
-      border: 1px solid #f5862d;
+      background-color: #2d3af5;
+      border: 1px solid #2d3af5;
       color: #ffffff;
     }
   }

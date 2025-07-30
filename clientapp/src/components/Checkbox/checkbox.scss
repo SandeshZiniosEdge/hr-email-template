@@ -32,8 +32,8 @@
   }
 
   .imt-checked {
-    border: 1px solid #f5862d;
-    background-color: #f5862d !important;
+    border: 1px solid #2d3af5;
+    background-color: #2d3af5 !important;
     border-radius: 2px;
   }
   .imt-custom-checkbox {
@@ -41,8 +41,8 @@
     height: 18px;
     width: 18px;
     background-color: #ffffff;
-    border-color: #f5862d;
-    border: 1px solid #f5862d;
+    border-color: #2d3af5;
+    border: 1px solid #2d3af5;
     border-radius: 2px;
     left: 0px;
 
@@ -69,11 +69,11 @@
 .imt-circular-checkbox {
   width: 18px;
   height: 18px;
-  border: 1px solid #f5862d;
+  border: 1px solid #2d3af5;
   border-radius: 50%;
   background: white;
   &.imt-circular-active {
-    background-color: #f5862d;
+    background-color: #2d3af5;
   }
 
   &.imt-disabled {
