@@ -1,0 +1,109 @@
+$primary_color: #f5862d;
+$text_color_first: #333333;
+$common_white: #ffffff;
+$placeholder-color: #4a4b4c;
+$placeholder-opacity: 0.3;
+
+%align-center {
+  display: flex;
+  align-items: center;
+}
+
+%align-end {
+  display: flex;
+  align-items: flex-end;
+}
+
+%justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+%justify-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+%align-justify-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+%align-justify-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+%align-end-justify-between {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+}
+
+%align-end-justify-end {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}
+
+%font-16-700 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+%font-18-400 {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+%font-18-700 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+%font-18-500 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+%font-26-700 {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+%formfield-placeholder-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: $placeholder-color !important;
+  opacity: $placeholder-opacity !important;
+}
+
+%entryscreen-textfields {
+  border: 1px solid rgba(194, 194, 194, 0.8588235294) !important;
+  border-radius: 8px !important;
+  padding-block: 21px;
+}
+
+@font-face {
+  font-family: "CustomInter";
+  src: url("./assets/fonts/inter/Inter-Black.otf") format("truetype");
+  src: url("./assets/fonts/inter/Inter-BlackItalic.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-Bold.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-BoldItalic.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-ExtraBold.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-ExtraBoldItalic.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-Italic.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-Light.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-LightItalic.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-Medium.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-MediumItalic.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-Regular.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-SemiBold.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-SemiBoldItalic.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-Thin.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-ThinItalic.otf") format("TrueType");
+  src: url("./assets/fonts/inter/Inter-V.ttf") format("TrueType");
+  font-display: swap;
+}

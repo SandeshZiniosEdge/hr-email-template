@@ -1,0 +1,143 @@
+@import "../../breakpoint-mixis.scss";
+
+.ql-editor {
+  min-height: 150px !important;
+  overflow: auto;
+}
+
+.form-margin {
+  margin-top: 15px;
+  margin-bottom: 3px;
+}
+
+.is-active-container {
+  margin-bottom: 10vh;
+  margin-left: 3vw;
+}
+
+.grid-container-notification {
+  display: grid;
+  grid-template-columns: 5fr 3fr;
+  height: fit-content;
+  gap: 10px;
+
+  @include md {
+    max-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    .variables-container {
+      height: 20%;
+      min-height: 140px;
+      .is-active-container {
+        display: none;
+      }
+      .static-layout {
+        .static-button {
+          margin-top: auto;
+        }
+      }
+      label {
+        font-size: medium !important;
+      }
+      overflow-y: hidden;
+      div:first-child {
+        margin-bottom: 0px !important;
+      }
+      span {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+
+        .static-layout {
+          display: flex;
+          padding: 10px;
+        }
+      }
+    }
+  }
+
+  .form-holder {
+    @include md {
+      height: 60%;
+    }
+    overflow-y: auto;
+  }
+
+  .formDiv {
+    padding-top: 13px;
+  }
+}
+
+.md-is-active-container {
+  display: none;
+  @include md {
+    display: block;
+    margin-left: auto;
+    input {
+      display: none;
+    }
+  }
+}
+
+.default-settings {
+  display: flex;
+  gap: 15px;
+  padding: 10px 0px;
+}
+.font-small {
+  font-size: small;
+  @include md {
+    font-size: medium;
+  }
+}
+.static-layout {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+.static-button {
+  margin-top: 5vh;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.displayError {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.rdw-editor-main {
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  border: 1px solid lightgray;
+}
+
+.errorstate {
+  color: #ff0000;
+  font-size: small;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 7vh;
+  margin-left: 5vw;
+}
+
+.default-settings-section {
+  margin-top: 6vh;
+}
+
+label {
+  font-weight: 500;
+}
+
+hr.solid {
+  border-top: 1px solid #f5862d;
+  margin-top: 5vh !important;
+  margin-bottom: 4vh;
+}
+
+textarea {
+  margin-bottom: 0px;
+}

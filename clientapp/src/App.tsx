@@ -1,6 +1,6 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AddNewNotification from "./AddNewNotification";
+import AddNewNotification from "./components/Notifications/AddNewNotification";
+import "./global.scss";
 
 const DummyNotificationsPage = () => (
   <div style={{ padding: 20 }}>
