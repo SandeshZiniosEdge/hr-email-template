@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Add New Notification</title>
+    <style>
+      body {
+        background: #f7f7f7;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        background: #fff;
+        max-width: 700px;
+        margin: 32px auto;
+        padding: 32px;
+        border-radius: 10px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .fieldError {
+        color: #b00;
+        font-size: 0.96em;
+      }
+      .form-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 24px;
+      }
+      .static-vars {
+        margin-top: 20px;
+      }
+      .static-vars button {
+        margin-right: 8px;
+        margin-bottom: 4px;
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 4px;
+      }
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+    </style>
+    <script>
+      // Insert static variable into focused input/textarea
+      let lastFocused;
+      function setFocusTo(el) {
+        lastFocused = el;
+      }
+      function insertStaticVariable(varname) {
+        if (!lastFocused) return;
+        const start = lastFocused.selectionStart;
+        const end = lastFocused.selectionEnd;
+        const value = lastFocused.value;
+        lastFocused.value = value.slice(0, start) + varname + value.slice(end);
+        lastFocused.focus();
+        lastFocused.selectionStart = lastFocused.selectionEnd =
+          start + varname.length;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Add New Notification</h1>
+      <form action="/submit" method="post" autocomplete="off">
+        <div class="form-group">
+          <label for="notificationScenarioId">Notification Scenario</label>
+          <input
+            type="text"
+            id="notificationScenarioId"
+            name="notificationScenarioId"
+            maxlength="100"
+            onfocus="setFocusTo(this)"
+          />
+        </div>
+
+        <hr />
+
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="smsRequired" name="smsRequired" checked />
+          <label for="smsRequired">SMS (Message)</label>
+        </div>
+        <div class="form-group">
+          <textarea
+            rows="3"
+            id="smsBody"
+            name="smsBody"
+            placeholder="Message"
+            maxlength="100"
+            onfocus="setFocusTo(this)"
+          ></textarea>
+          <small>Max 100 characters</small>
+        </div>
+        <hr />
+
+        <div class="form-group checkbox-group">
+          <input
+            type="checkbox"
+            id="emailRequired"
+            name="emailRequired"
+            checked
+          />
+          <label for="emailRequired">Email Notification</label>
+        </div>
+        <div class="form-group">
+          <label for="emailSubject">Subject</label>
+          <input
+            type="text"
+            id="emailSubject"
+            name="emailSubject"
+            onfocus="setFocusTo(this)"
+          />
+        </div>
+        <div class="form-group">
+          <label for="emailBody">Email Message</label>
+          <textarea
+            rows="5"
+            id="emailBody"
+            name="emailBody"
+            onfocus="setFocusTo(this)"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="emailButtonName">Link Button Name</label>
+          <input
+            type="text"
+            id="emailButtonName"
+            name="emailButtonName"
+            maxlength="100"
+            onfocus="setFocusTo(this)"
+          />
+        </div>
+        <hr />
+
+        <div class="form-group checkbox-group">
+          <input
+            type="checkbox"
+            id="inPortalWebRequired"
+            name="inPortalWebRequired"
+            checked
+          />
+          <label for="inPortalWebRequired">In-Portal Notifications</label>
+        </div>
+        <div class="form-group">
+          <label for="inPortalWebSubject">Subject</label>
+          <input
+            type="text"
+            id="inPortalWebSubject"
+            name="inPortalWebSubject"
+            onfocus="setFocusTo(this)"
+          />
+        </div>
+        <div class="form-group">
+          <label for="inPortalWebBody">In-Portal Message</label>
+          <textarea
+            rows="4"
+            id="inPortalWebBody"
+            name="inPortalWebBody"
+            onfocus="setFocusTo(this)"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="inPortalWebLinkName">In-Portal Link Name</label>
+          <input
+            type="text"
+            id="inPortalWebLinkName"
+            name="inPortalWebLinkName"
+            onfocus="setFocusTo(this)"
+          />
+        </div>
+        <hr />
+
+        <div class="form-group checkbox-group">
+          <input
+            type="checkbox"
+            id="mobilePushRequired"
+            name="mobilePushRequired"
+            checked
+          />
+          <label for="mobilePushRequired">Mobile App Push Notifications</label>
+        </div>
+        <div class="form-group">
+          <label for="mobilePushSubject">Subject</label>
+          <input
+            type="text"
+            id="mobilePushSubject"
+            name="mobilePushSubject"
+            onfocus="setFocusTo(this)"
+          />
+        </div>
+        <div class="form-group">
+          <label for="mobilePushBody">Mobile App Message</label>
+          <textarea
+            rows="3"
+            id="mobilePushBody"
+            name="mobilePushBody"
+            onfocus="setFocusTo(this)"
+          ></textarea>
+        </div>
+        <hr />
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="isActive" name="isActive" checked />
+          <label for="isActive">Is Active</label>
+        </div>
+        <hr />
+        <div class="static-vars">
+          <label>Static Variables</label>
+          <div>
+            <button
+              type="button"
+              onclick="insertStaticVariable('##FIRST_NAME##')"
+            >
+              ##FIRST_NAME##
+            </button>
+            <button
+              type="button"
+              onclick="insertStaticVariable('##MIDDLE_NAME##')"
+            >
+              ##MIDDLE_NAME##
+            </button>
+            <button
+              type="button"
+              onclick="insertStaticVariable('##LAST_NAME##')"
+            >
+              ##LAST_NAME##
+            </button>
+            <button
+              type="button"
+              onclick="insertStaticVariable('##DESIGNATION##')"
+            >
+              ##DESIGNATION##
+            </button>
+            <button type="button" onclick="insertStaticVariable('##DATE##')">
+              ##DATE##
+            </button>
+          </div>
+          <small>Click to insert into the selected field</small>
+        </div>
+        <div class="form-actions">
+          <button type="submit">Save</button>
+          <button type="button" onclick="window.location.reload();">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
