@@ -407,9 +407,9 @@ const AddNewNotification = () => {
     <div className="container">
       <form onSubmit={formik.handleSubmit}>
         <ActionButtons>
-          <Button variant="outline" onClick={handleCancel}>
+          {/* <Button variant="outline" onClick={handleCancel}>
             Cancel
-          </Button>
+          </Button> */}
           <Button type="submit">Save</Button>
         </ActionButtons>
 

@@ -1,0 +1,56 @@
+@import "../../breakpoint-mixis.scss";
+@import "../../variable.scss";
+
+.imt-pagination {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0 1rem;
+  p {
+    color: #333333a3;
+    font-size: 14px;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+  }
+  @include sm {
+    flex-direction: column;
+  }
+  .page-item {
+    margin: 0 5px;
+    display: inline-block;
+    user-select: none;
+  }
+
+  .page-link {
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #f1f1f1;
+    background-color: #fff;
+    color: #333;
+    font-size: 13px;
+  }
+
+  .prevNext {
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid #f1f1f1;
+    background-color: #fff;
+    color: #333;
+    font-size: 13px;
+    padding: 4px 8px;
+  }
+
+  .page-active {
+    a {
+      background-color: $primary_color;
+      color: #fff;
+    }
+  }
+}

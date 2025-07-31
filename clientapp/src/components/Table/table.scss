@@ -1,0 +1,140 @@
+@import "../../breakpoint-mixis.scss";
+@import "../../variable.scss";
+
+.imt-table-container {
+  table-layout: fixed;
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 40px;
+  margin-inline: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 660px;
+}
+
+.imt-table-hidden {
+  @include md {
+    display: none;
+    margin-bottom: 30px;
+  }
+}
+
+.imt-table {
+  width: 100%;
+  border-collapse: collapse;
+  .imt-switch {
+    z-index: 0;
+  }
+  .imt-head {
+    background-color: white;
+    z-index: 200;
+
+    th {
+      text-align: left;
+      padding: 10px;
+
+      border-bottom: 1px solid #00000021;
+      background: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      position: sticky;
+      z-index: 2;
+      top: 0;
+      color: black;
+    }
+
+    .imt-sort {
+      color: black;
+      &.imt-current-sort {
+        img,
+        svg {
+          stroke: $primary_color;
+          fill: $primary_color;
+          path {
+            stroke: $primary_color !important;
+            fill: $primary_color !important;
+          }
+        }
+      }
+      button {
+        font-size: inherit;
+        font-weight: inherit;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding-block: 5px;
+        width: fit-content;
+        cursor: pointer;
+        user-select: none;
+        color: black;
+      }
+    }
+    .imt-table-row {
+      td {
+        width: fit-content;
+        font-size: 14px;
+      }
+    }
+  }
+  tbody {
+    tr {
+      border-bottom: none;
+      border-radius: 8px;
+    }
+    td {
+      font-size: 13px;
+      font-weight: 500;
+      text-align: left;
+      padding: 15px 10px;
+      width: fit-content;
+    }
+    tr:nth-child(odd) {
+      td {
+        background: #f9fafc;
+      }
+    }
+    tr:nth-child(even) {
+      td {
+        background: #ffffff;
+      }
+    }
+  }
+}
+.imt-accordion-button {
+  border: none;
+  outline: none;
+  background: transparent;
+  margin-left: auto;
+  margin-right: 10px;
+  .rotateUp {
+    transform: rotate(360deg);
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
+  }
+  .rotateDown {
+    transform: rotate((180deg));
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
+  }
+}
+
+.imt-action-stick {
+  position: sticky;
+  right: 0;
+}
+
+.imt-action-stick.imt-action-stick-2 {
+  right: 0px;
+}
+
+.imt-table-empty {
+  display: flex;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.imt-table-shadow {
+  box-shadow: 0px 4px 16px 0px #0000001a;
+}
