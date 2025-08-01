@@ -11,8 +11,10 @@ import Container from "../Custom/Container";
 import { FilterContainer } from "../Custom/FilterContainer";
 
 import Clickable from "../Custom/Clickable";
+import { useNavigate } from "react-router-dom";
 
 const Notifications = () => {
+  const navigate = useNavigate();
   const NotificationTableDefinition = useMemo(
     () => [
       {
@@ -31,7 +33,7 @@ const Notifications = () => {
         label: "Actions",
         // condition: permission.canEdit,
         render: (item: NotificationType) => (
-          <Action icon="edit" onClick={() => {}} />
+          <Action icon="edit" onClick={() => navigate(`/edit/${item.id}`)} />
         ),
         width: 10,
       },
@@ -191,7 +193,7 @@ const Notifications = () => {
     <Container>
       <SubHeader>
         <SearchBar />
-        <Button to="/admin/notifications/add">Add New</Button>
+        <Button to="/add">Add New</Button>
       </SubHeader>
       <FilterContainer definition={NotificationTableDefinition} />
       <Table

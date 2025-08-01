@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, forwardRef, CSSProperties } from "react";
 import "./button.scss";
-// import { navigate } from "@/store/usePageParams";
+import { useNavigate } from "react-router-dom";
 import { Spinner } from "react-activity";
 
 enum ButtonVariants {
@@ -42,6 +42,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
+    const navigate = useNavigate();
     // Merge existing styles with custom styles, giving priority to custom styles
     const mergedStyles = customStyles
       ? {
@@ -69,7 +70,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           type={type}
           {...props}
           disabled={isLoading || props.disabled}
-          onClick={() => {}}
+          onClick={() => navigate(to)}
           style={mergedStyles}
           className={`imt-button ${ButtonVariants[variant]} ${className} ${ButtonSize[size]}`}
         >

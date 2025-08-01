@@ -9,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Notifications />} />
         <Route path="/add" element={<AddNewNotification />} />
+        <Route path="/edit/:id" element={<AddNewNotification />} />
       </Routes>
     </Router>
   );

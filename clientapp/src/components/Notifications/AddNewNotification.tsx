@@ -3,18 +3,20 @@ import { useFormik } from "formik";
 
 import * as Yup from "yup";
 import "./AddNewNotification.scss";
-import { useNavigate } from "react-router-dom";
 
-import { convertToRaw, EditorState, Modifier } from "draft-js";
+import { convertToRaw, EditorState, Modifier, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { CharacterValidationReg } from "../../constants";
 import Checkbox from "../Checkbox";
-import SelectWrapper from "../SelectWrapper";
+
 import ActionButtons from "../Button/ActionButtons";
 import Button from "../Button/Button";
+import { useNavigate, useParams } from "react-router-dom";
+import Clickable from "../Custom/Clickable";
+// import { FaArrowLeft } from "react-icons/fa";
 
 const toolbar = {
   options: ["inline", "textAlign", "colorPicker"],
@@ -46,6 +48,26 @@ interface NotificationAdd {
   mobilePushBody: string;
   isActive: boolean;
 }
+const editData: NotificationAdd = {
+  notificationScenario: "Demo: Application Submission",
+  smsBody: "Your application was submitted successfully.",
+  emailSubject: "Thank you for your application",
+  emailBody: "<p>Your <b>application</b> has been submitted!</p>",
+  emailButtonName: "Check Application",
+  smsRequired: true,
+  emailRequired: true,
+  physicianDefault: true,
+  salesRepDefault: false,
+  coordinatorDefault: false,
+  inPortalWebRequired: true,
+  inPortalWebSubject: "Portal Update",
+  inPortalWebBody: "<p>Your application status updated.</p>",
+  inPortalWebLinkName: "Portal Link",
+  mobilePushRequired: true,
+  mobilePushSubject: "App Update",
+  mobilePushBody: "You have a new update on your application.",
+  isActive: true,
+};
 
 const AddNewNotification = () => {
   const navigate = useNavigate();
@@ -69,6 +91,51 @@ const AddNewNotification = () => {
   const [fieldType, setFieldType] = useState<any>("");
   const [emailRecipients, setEmailRecipients] = useState<string[]>([]);
   const [emailInput, setEmailInput] = useState("");
+  const { id } = useParams<{ id?: string }>();
+  const getInitialValues = () => {
+    if (id) return { ...editData };
+    return {
+      notificationScenario: "",
+      smsBody: "",
+      emailSubject: "",
+      emailBody: "",
+      emailButtonName: "",
+      smsRequired: true,
+      emailRequired: true,
+      physicianDefault: true,
+      salesRepDefault: true,
+      coordinatorDefault: true,
+      inPortalWebRequired: true,
+      inPortalWebSubject: "",
+      inPortalWebBody: "",
+      mobilePushRequired: true,
+      mobilePushSubject: "",
+      mobilePushBody: "",
+      inPortalWebLinkName: "",
+      isActive: true,
+    };
+  };
+
+  useEffect(() => {
+    if (id && editData) {
+      // Strip tags for demo; replace with html-to-draftjs in real app
+      if (editData.emailBody) {
+        const content = ContentState.createFromText(
+          editData.emailBody.replace(/<[^>]+>/g, "")
+        );
+        setEditorStateEmail(EditorState.createWithContent(content));
+      }
+      if (editData.inPortalWebBody) {
+        const content = ContentState.createFromText(
+          editData.inPortalWebBody.replace(/<[^>]+>/g, "")
+        );
+        setEditorState(EditorState.createWithContent(content));
+      }
+      setSmsCheckbox(editData.smsRequired);
+      setIsActive(editData.isActive);
+      setEmailNotificationCheckbox(editData.emailRequired);
+    }
+  }, [id]);
 
   useEffect(() => {
     setStaticVaribles([
@@ -113,26 +180,8 @@ const AddNewNotification = () => {
   };
 
   const formik = useFormik({
-    initialValues: {
-      notificationScenario: "",
-      smsBody: "",
-      emailSubject: "",
-      emailBody: "",
-      emailButtonName: "",
-      smsRequired: true,
-      emailRequired: true,
-      physicianDefault: true,
-      salesRepDefault: true,
-      coordinatorDefault: true,
-      inPortalWebRequired: true,
-      inPortalWebSubject: "",
-      inPortalWebBody: "",
-      mobilePushRequired: true,
-      mobilePushSubject: "",
-      mobilePushBody: "",
-      inPortalWebLinkName: "",
-      isActive: true,
-    },
+    initialValues: getInitialValues(),
+    enableReinitialize: true,
     onSubmit: (values) => {
       const resetForm = formik.resetForm;
       handleNotificationSubmit(values, { resetForm });
@@ -406,10 +455,18 @@ const AddNewNotification = () => {
   return (
     <div className="container">
       <form onSubmit={formik.handleSubmit}>
+        <span style={{ display: "flex" }}>
+          <Clickable className="imt-action" onClick={() => navigate(-1)}>
+            {"<-"}
+          </Clickable>
+          <h3 style={{ marginBottom: "1rem" }}>
+            {id ? "Edit Notification" : "Add New Notification"}
+          </h3>
+        </span>
         <ActionButtons>
-          {/* <Button variant="outline" onClick={handleCancel}>
-            Cancel
-          </Button> */}
+          <Button variant="outline" onClick={handleCancel}>
+            Send Email
+          </Button>
           <Button type="submit">Save</Button>
         </ActionButtons>
 
@@ -451,6 +508,7 @@ const AddNewNotification = () => {
                   />
                 </div>
               </div>
+
               <div className="form-group" style={{ marginTop: "2rem" }}>
                 <label htmlFor="notificationScenario">
                   Notification Scenario

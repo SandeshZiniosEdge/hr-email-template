@@ -162,7 +162,6 @@ textarea {
 }
 
 .email-chip {
-  background: #e0e0e0;
   border-radius: 16px;
   padding: 4px 10px;
   margin-right: 8px;
@@ -170,6 +169,8 @@ textarea {
   display: flex;
   align-items: center;
   font-size: 13px;
+  color: #2d3af5;
+  border: 1px solid #2d3af5; /* Blue outline border */
 }
 
 .remove-email {
