@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Cases", {
+    await queryInterface.createTable("TemplateVariables", {
       // Auto-increment id field (helpful for most tables; remove if you specifically don't want it)
       id: {
         allowNull: false,
