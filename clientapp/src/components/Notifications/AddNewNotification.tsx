@@ -16,7 +16,7 @@ import ActionButtons from "../Button/ActionButtons";
 import Button from "../Button/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import Clickable from "../Custom/Clickable";
-// import { FaArrowLeft } from "react-icons/fa";
+import clearIcon from "../../assets/icons/wrongIT.svg";
 
 const toolbar = {
   options: ["inline", "textAlign", "colorPicker"],
@@ -494,7 +494,7 @@ const AddNewNotification = () => {
                         onClick={() => removeEmail(idx)}
                         aria-label={`Remove ${email}`}
                       >
-                        ×
+                        <img src={clearIcon} />
                       </button>
                     </div>
                   ))}

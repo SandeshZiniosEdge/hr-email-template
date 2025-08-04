@@ -1,9 +1,19 @@
 const express = require("express");
-const app = express();
+const NotificationScenarioRoutes = require("./routes/NotificationScenarios");
+const { sequelize } = require("./models");
 
-app.use(express.urlencoded({ extended: true }));
+const app = express();
+app.use(express.json());
+
+app.use("/scenarios", NotificationScenarioRoutes);
 
 const PORT = 5000;
-app.listen(PORT, () =>
-  console.log(`Server running at http://localhost:${PORT}`)
-);
+app.listen(PORT, async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("✅ Connected to Neon PostgreSQL");
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+  } catch (error) {
+    console.error("❌ Unable to connect to the database:", error);
+  }
+});
