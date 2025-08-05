@@ -21,7 +21,16 @@ export interface NotificationScenario {
   updatedAt?: string;
 }
 
-const API_BASE_URL = "http://localhost:5000/api/notification-scenarios";
+export interface TemplateVariable {
+  id?: number;
+  name: string;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+const API_BASE_URL = "http://localhost:5050/scenarios";
+const VARIABLE_API_BASE_URL = "http://localhost:5050/variables";
 
 export const fetchScenarios = async (
   page = 1,
@@ -108,5 +117,23 @@ export const updateScenario = async (
     throw new Error(error.message || "Failed to update scenario");
   }
 
+  return await res.json();
+};
+
+// Fetch all template variables (optionally filtered by isActive)
+export const fetchTemplateVariables = async (
+  isActive?: boolean
+): Promise<{
+  success: boolean;
+  data: TemplateVariable[];
+}> => {
+  // const params = new URLSearchParams();
+  // if (isActive !== undefined) {
+  //   params.append("isActive", String(isActive));
+  // }
+  console.log("Calling");
+  const res = await fetch(`${VARIABLE_API_BASE_URL}`);
+  console.log("Called");
+  if (!res.ok) throw new Error("Failed to fetch template variables");
   return await res.json();
 };

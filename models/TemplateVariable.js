@@ -3,13 +3,13 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class Case extends Model {
+  class TemplateVariable extends Model {
     static associate(models) {
       // Define associations here
     }
   }
 
-  Case.init(
+  TemplateVariable.init(
     {
       id: {
         allowNull: false,
@@ -29,11 +29,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "TemplateVariables",
+      modelName: "TemplateVariable",
       tableName: "TemplateVariables",
       timestamps: true,
     }
   );
 
-  return Case;
+  return TemplateVariable;
 };

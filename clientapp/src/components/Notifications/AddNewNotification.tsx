@@ -17,6 +17,7 @@ import Button from "../Button/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import Clickable from "../Custom/Clickable";
 import clearIcon from "../../assets/icons/wrongIT.svg";
+import { fetchTemplateVariables } from "../../api/notificationScenarios";
 
 const toolbar = {
   options: ["inline", "textAlign", "colorPicker"],
@@ -138,13 +139,16 @@ const AddNewNotification = () => {
   }, [id]);
 
   useEffect(() => {
-    setStaticVaribles([
-      { name: "##First Name##" },
-      { name: "##Middle Name##" },
-      { name: "##Last Name##" },
-      { name: "##Designation##" },
-      { name: "##Date##" },
-    ]);
+    const loadVariables = async () => {
+      try {
+        const res = await fetchTemplateVariables(true);
+        setStaticVaribles(res.data);
+      } catch (error) {
+        console.error("Failed to fetch template variables:", error);
+      }
+    };
+
+    loadVariables();
   }, []);
 
   const validateEmail = (email: string) => {
