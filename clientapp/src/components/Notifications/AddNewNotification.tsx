@@ -18,6 +18,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import Clickable from "../Custom/Clickable";
 import clearIcon from "../../assets/icons/wrongIT.svg";
 import { fetchTemplateVariables } from "../../api/notificationScenarios";
+import {
+  createScenario,
+  updateScenario,
+  fetchScenarioById,
+} from "../../api/notificationScenarios";
 
 const toolbar = {
   options: ["inline", "textAlign", "colorPicker"],
@@ -118,24 +123,40 @@ const AddNewNotification = () => {
   };
 
   useEffect(() => {
-    if (id && editData) {
-      // Strip tags for demo; replace with html-to-draftjs in real app
-      if (editData.emailBody) {
-        const content = ContentState.createFromText(
-          editData.emailBody.replace(/<[^>]+>/g, "")
-        );
-        setEditorStateEmail(EditorState.createWithContent(content));
+    const getScenarioData = async () => {
+      if (id) {
+        try {
+          const response = await fetchScenarioById(Number(id));
+          const data = response.data;
+          // If your emailBody and inPortalWebBody are HTML, process as needed
+          if (data.emailBody) {
+            const content = ContentState.createFromText(
+              data.emailBody.replace(/<[^>]+>/g, "")
+            );
+            setEditorStateEmail(EditorState.createWithContent(content));
+          }
+          if (data.inPortalWebBody) {
+            const content = ContentState.createFromText(
+              data.inPortalWebBody.replace(/<[^>]+>/g, "")
+            );
+            setEditorState(EditorState.createWithContent(content));
+          }
+          setSmsCheckbox(!!data.smsRequired);
+          setIsActive(!!data.isActive);
+          setEmailNotificationCheckbox(!!data.emailRequired);
+
+          // Set form values
+          formik.setValues({
+            ...getInitialValues(), // reset everything
+            ...data, // overwrite with fetched data
+          });
+        } catch (error) {
+          console.error("Failed to fetch scenario for editing:", error);
+        }
       }
-      if (editData.inPortalWebBody) {
-        const content = ContentState.createFromText(
-          editData.inPortalWebBody.replace(/<[^>]+>/g, "")
-        );
-        setEditorState(EditorState.createWithContent(content));
-      }
-      setSmsCheckbox(editData.smsRequired);
-      setIsActive(editData.isActive);
-      setEmailNotificationCheckbox(editData.emailRequired);
-    }
+    };
+
+    getScenarioData();
   }, [id]);
 
   useEffect(() => {
@@ -312,6 +333,7 @@ const AddNewNotification = () => {
     values: NotificationAdd,
     { resetForm }: any
   ) => {
+    // previous checks...
     const shouldSubmit = checkErrors();
     if (!shouldSubmit) return;
 
@@ -321,26 +343,33 @@ const AddNewNotification = () => {
       !values.inPortalWebRequired;
 
     if (check) {
-      setErrorState("Select atleast one type of notification");
+      setErrorState("Select at least one type of notification");
+      return;
     } else {
       setErrorState("");
     }
 
     try {
-      const body = formik.values;
-      // Replace with actual API call
-      console.log("Submitting notification:", body);
+      let result;
+      if (id) {
+        // Edit mode: update
+        result = await updateScenario(Number(id), values);
+      } else {
+        // Add mode: create
+        result = await createScenario(values);
+      }
 
-      // Simulate successful submission
-      const res = { isSuccess: true };
-
-      if (res?.isSuccess) {
+      if (result && result.success) {
         resetForm();
-        navigate("/admin/notifications");
-        // Replace toast with console.log or custom notification
+        navigate("/");
+        // Replace with your toast/snackbar of choice
         console.log("Data saved successfully");
+      } else {
+        // Show user error
+        setErrorState(result?.message || "An error occurred");
       }
     } catch (error: any) {
+      setErrorState(error.message || "Failed to save notification");
       console.log(error);
     }
   };
@@ -453,7 +482,7 @@ const AddNewNotification = () => {
   };
 
   const handleCancel = () => {
-    navigate("/admin/notifications");
+    navigate("/");
   };
 
   return (
@@ -468,8 +497,9 @@ const AddNewNotification = () => {
           </h3>
         </span>
         <ActionButtons>
+          <Button variant="outline">Send Email</Button>
           <Button variant="outline" onClick={handleCancel}>
-            Send Email
+            Cancel
           </Button>
           <Button type="submit">Save</Button>
         </ActionButtons>
